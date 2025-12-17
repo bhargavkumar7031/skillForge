@@ -25,4 +25,9 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("User added successfully");
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<String> verifyUser(@RequestBody signupRequestDTO signInRequest) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body("This is your password response");
+    }
+
 }
