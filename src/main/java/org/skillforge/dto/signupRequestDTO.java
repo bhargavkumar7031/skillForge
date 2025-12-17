@@ -2,11 +2,11 @@ package org.skillforge.dto;
 
 public class signupRequestDTO {
     private String email;
-    private String Password;
+    private String password;
 
     public signupRequestDTO(String email, String password) {
         this.email = email;
-        Password = password;
+        this.password = password;
     }
 
     public String getEmail() {
@@ -18,18 +18,18 @@ public class signupRequestDTO {
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public void setPassword(String password) {
-        Password = password;
+        this.password = password;
     }
 
     @Override
     public String toString() {
         return "signupRequestDTO{" +
                 "email='" + email + '\'' +
-                ", Password='" + Password + '\'' +
+                ", Password='" + password + '\'' +
                 '}';
     }
 }

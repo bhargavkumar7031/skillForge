@@ -18,12 +18,14 @@ public class UserService {
 
 
     public void add(signupRequestDTO signupRequest) {
-        String EMAIL_REGEX = "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/";
-        String PASS_REGEX = "^(?=.*[A-Za-z])(?=.*\\\\d)(?=.*[@$!%*?&\\\\-])[A-Za-z\\\\d@$!%*?&\\\\-]{8,}$";
+        String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        String PASS_REGEX = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*?&-])[A-Za-z\\d@$!%*?&-]{8,}$";
+
 
         User user = new User();
 
         if(!(Pattern.matches(EMAIL_REGEX, signupRequest.getEmail()))) {
+            System.out.println(signupRequest.getEmail());
             throw new InvalidInputException("Invalid Email");
         }
 
