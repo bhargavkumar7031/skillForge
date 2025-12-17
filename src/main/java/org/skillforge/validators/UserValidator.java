@@ -1,6 +1,6 @@
 package org.skillforge.validators;
 
-import org.skillforge.dto.signupRequestDTO;
+import org.skillforge.dto.authRequestDTO;
 import org.skillforge.exceptions.InvalidInputException;
 import org.springframework.stereotype.Component;
 
@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 @Component
 public class UserValidator {
-    public void userValidation(signupRequestDTO request) {
+    public void userValidation(authRequestDTO request) {
         String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
         String PASS_REGEX = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*?&-])[A-Za-z\\d@$!%*?&-]{8,}$";
 

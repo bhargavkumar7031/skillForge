@@ -1,10 +1,10 @@
 package org.skillforge.dto;
 
-public class signupRequestDTO {
+public class authRequestDTO {
     private String email;
     private String password;
 
-    public signupRequestDTO(String email, String password) {
+    public authRequestDTO(String email, String password) {
         this.email = email;
         this.password = password;
     }
@@ -13,16 +13,8 @@ public class signupRequestDTO {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     @Override

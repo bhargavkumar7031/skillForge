@@ -1,7 +1,6 @@
 package org.skillforge.controller;
 
-import org.skillforge.domain.User;
-import org.skillforge.dto.signupRequestDTO;
+import org.skillforge.dto.authRequestDTO;
 import org.skillforge.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +15,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> addUser(@RequestBody signupRequestDTO signupRequest){
+    public ResponseEntity<String> addUser(@RequestBody authRequestDTO signupRequest){
         try {
             userService.add(signupRequest);
         } catch(RuntimeException err) {
@@ -26,8 +25,15 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> verifyUser(@RequestBody signupRequestDTO signInRequest) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body("This is your password response");
+    public ResponseEntity<String> verifyUser(@RequestBody authRequestDTO signInRequest) {
+        String userVerification;
+        try {
+            userVerification = userService.verify(signInRequest);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.toString());
+        }
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(userVerification);
     }
 
 }
