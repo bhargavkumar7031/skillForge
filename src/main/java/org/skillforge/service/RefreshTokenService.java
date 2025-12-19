@@ -71,15 +71,12 @@ public class RefreshTokenService {
     public ResponseEntity<String> logoutUser() {
         try {
             String username = Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication()).getName();
-            System.out.println(username);
             User user = userRepository.findByEmail(username).orElseThrow();
-            System.out.println(user);
             deleteByUser(user);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body("Logout Successful");
         } catch(Exception e) {
             System.out.println(e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Logout Failed");
         }
-
     }
 }
