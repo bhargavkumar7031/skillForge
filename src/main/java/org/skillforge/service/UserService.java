@@ -1,6 +1,7 @@
 package org.skillforge.service;
 
 import org.skillforge.domain.User;
+import org.skillforge.dto.AuthResponse;
 import org.skillforge.dto.authRequestDTO;
 import org.skillforge.exceptions.InvalidInputException;
 import org.skillforge.repository.UserRepository;
@@ -25,13 +26,16 @@ public class UserService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
+    private final RefreshTokenService refreshTokenService;
 
-    public UserService(UserRepository userRepo, UserValidator userValidator, AuthenticationManager authenticationManager, JwtService jwtService, PasswordEncoder passwordEncoder) {
+
+    public UserService(UserRepository userRepo, UserValidator userValidator, AuthenticationManager authenticationManager, JwtService jwtService, PasswordEncoder passwordEncoder, RefreshTokenService refreshTokenService) {
         this.userRepo = userRepo;
         this.userValidator = userValidator;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
+        this.refreshTokenService = refreshTokenService;
     }
 
     public void add(authRequestDTO signupRequest) {
@@ -49,16 +53,16 @@ public class UserService {
         userRepo.save(user);
     }
 
-    public String verify(authRequestDTO loginRequest){
+    public AuthResponse verify(authRequestDTO loginRequest){
         userValidator.userValidation(loginRequest);
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
         User user = userRepo.findByEmail(loginRequest.getEmail()).orElseThrow();
         if(authentication.isAuthenticated()){
-            return jwtService.GenerateToken(userDetails(user));
+            return new AuthResponse(jwtService.GenerateToken(userDetails(user)), refreshTokenService.createRefreshToken(user.getEmail()).getToken());
         }
-        return "Incorrect credentials. Please try again";
+        return new AuthResponse("", "");
     }
 
     public UserDetails userDetails(User user) {
