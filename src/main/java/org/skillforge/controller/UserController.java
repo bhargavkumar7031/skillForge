@@ -22,11 +22,7 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity<String> addUser(@RequestBody authRequestDTO signupRequest){
-        try {
-            userService.add(signupRequest);
-        } catch(RuntimeException err) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err.toString());
-        }
+        userService.add(signupRequest);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("User added successfully");
     }
 
