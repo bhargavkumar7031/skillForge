@@ -25,17 +25,18 @@ public class UserService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
-
+    private final UserStatsService userStatsService;
     private final RefreshTokenService refreshTokenService;
 
 
-    public UserService(UserRepository userRepo, UserValidator userValidator, AuthenticationManager authenticationManager, JwtService jwtService, PasswordEncoder passwordEncoder, RefreshTokenService refreshTokenService) {
+    public UserService(UserRepository userRepo, UserValidator userValidator, AuthenticationManager authenticationManager, JwtService jwtService, PasswordEncoder passwordEncoder, RefreshTokenService refreshTokenService, UserStatsService userStatsService) {
         this.userRepo = userRepo;
         this.userValidator = userValidator;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
         this.refreshTokenService = refreshTokenService;
+        this.userStatsService = userStatsService;
     }
 
     public void add(authRequestDTO signupRequest) {
@@ -51,6 +52,7 @@ public class UserService {
         user.setCreatedAt(new Date());
 
         userRepo.save(user);
+        userStatsService.addStreak(signupRequest.getEmail());
     }
 
     public AuthResponse verify(authRequestDTO loginRequest){
@@ -61,6 +63,7 @@ public class UserService {
         User user = userRepo.findByEmail(loginRequest.getEmail()).orElseThrow();
         if(authentication.isAuthenticated()){
             return new AuthResponse(jwtService.GenerateToken(userDetails(user)), refreshTokenService.createRefreshToken(user.getEmail()).getToken());
+//          add a point everytime user logs in
         }
         return new AuthResponse("", "");
     }
